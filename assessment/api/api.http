@@ -1,6 +1,15 @@
 @api_HostAddress = http://localhost:5098
 
-GET {{api_HostAddress}}/weatherforecast/
+POST {{api_HostAddress}}/placeBet/
+Accept: application/json
+
+POST {{api_HostAddress}}/spin/
+Accept: application/json
+
+Get {{api_HostAddress}}/showPreviousSpins/
+Accept: application/json
+
+POST {{api_HostAddress}}/payout/
 Accept: application/json
 
 ###
