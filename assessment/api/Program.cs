@@ -1,9 +1,26 @@
+using System.Reflection;
+
+using api;
+using api.Extensions;
+
+using DbUp;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers()
+    .AddJsonOptions(
+        options =>
+            {
+                //configures PascalCase formatting instead of the default camelCase formatting.
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            });
+builder.Services.ConfigureDbMigration(builder.Configuration);
+builder.Services.ConfigureCors();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.ConfigureOutputCaching();
+builder.Services.ConfigureRateLimitingOptions();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -17,6 +34,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 

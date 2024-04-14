@@ -1,0 +1,38 @@
+﻿version: '3.8'
+volumes:
+  sqlserver_data: null
+services:
+  sqlserver:
+    container_name: 'sql-server'
+    image: 'mcr.microsoft.com/mssql/server:2019-latest'
+    environment:
+      - 'ACCEPT_EULA=Y'
+      - 'MSSQL_SA_PASSWORD=Pa$$word5221!'
+    ports:
+      - '1433:1433'
+    volumes:
+      - 'sqlserver_data:/var/opt/mssql'
+    restart: always
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Pa$$word5221! -Q
+          'SELECT 1' || exit 1
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 3s
+  # sqlserver.configurator:
+  #   image: 'mcr.microsoft.com/mssql/server:2019-latest'
+  #   volumes:
+  #     - './init:/docker-entrypoint-initdb.d'
+  #   depends_on:
+  #     sqlserver:
+  #       condition: service_healthy
+  #   command: >
+  #     bash -c ' /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P Pa$$word5221!
+  #     -d master -i docker-entrypoint-initdb.d/init.sql;
+  #     /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P Pa$$word5221! -d
+  #     Nortwind -i docker-entrypoint-initdb.d/northwind_data.sql; echo "All
+  #     done!"; '
