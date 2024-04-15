@@ -2,7 +2,7 @@
 {
     using Contracts;
 
-    public class RepositoryManager
+    public class RepositoryManager: IRepositoryManager
     {
         private readonly DapperContext _context;
         private readonly Lazy<IBettingRepository> _bettingRepository;

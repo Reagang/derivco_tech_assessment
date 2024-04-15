@@ -1,38 +1,54 @@
 ﻿version: '3.8'
-volumes:
-  sqlserver_data: null
 services:
   sqlserver:
+    build:
+      context: .
+      dockerfile: ./init/Dockerfile.sqlserver
     container_name: 'sql-server'
-    image: 'mcr.microsoft.com/mssql/server:2019-latest'
+    image: 'mcr.microsoft.com/mssql/server:2022-latest'
     environment:
       - 'ACCEPT_EULA=Y'
       - 'MSSQL_SA_PASSWORD=Pa$$word5221!'
+      - 'MSSQL_PID=Developer'
     ports:
       - '1433:1433'
     volumes:
       - 'sqlserver_data:/var/opt/mssql'
     restart: always
+    user: root
     healthcheck:
       test:
         - CMD-SHELL
         - >-
-          /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Pa$$word5221! -Q
+          /opt/mssql-tools/bin/sqlcmd -S sqlserver,1433 -U SA -P Pa$$word5221! -Q
           'SELECT 1' || exit 1
       interval: 10s
-      retries: 10
+      retries: 5
       start_period: 10s
       timeout: 3s
-  # sqlserver.configurator:
-  #   image: 'mcr.microsoft.com/mssql/server:2019-latest'
-  #   volumes:
-  #     - './init:/docker-entrypoint-initdb.d'
-  #   depends_on:
-  #     sqlserver:
-  #       condition: service_healthy
-  #   command: >
-  #     bash -c ' /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P Pa$$word5221!
-  #     -d master -i docker-entrypoint-initdb.d/init.sql;
-  #     /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P Pa$$word5221! -d
-  #     Nortwind -i docker-entrypoint-initdb.d/northwind_data.sql; echo "All
-  #     done!"; '
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: 'api'
+    ports:
+      - '8080:8080'
+      - '8081:8081'
+  sqlserver.configurator:
+    image: 'mcr.microsoft.com/mssql/server:2019-latest'
+    volumes:
+      - './init:/docker-entrypoint-initdb.d'
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    command: >
+      bash -c ' /opt/mssql-tools/bin/sqlcmd -S sqlserver -U SA -P Pa$$word5221!
+      -d master -i docker-entrypoint-initdb.d/init.sql;
+      /opt/mssql-tools/bin/sqlcmd -S sqlserver -U SA -P Pa$$word5221! -d
+      Nortwind -i docker-entrypoint-initdb.d/northwind_data.sql; echo "All
+      done!"; '
+
+volumes:
+  sqlserver_data:
+
+  

@@ -17,7 +17,6 @@ namespace Service
     {
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
-        //private readonly IMapper _mapper;
 
         public BettingService(IRepositoryManager repository, ILoggerManager logger)
         {
@@ -26,11 +25,7 @@ namespace Service
         }
         public async Task<PlaceBetDto> PlaceBet(PlaceBetRequestDto bet)
         {
-            //var betEntity = _mapper.Map<Bet>(bet);
-
             var result = _repository.Betting.PlaceBet(bet);
-
-            //var betToReturn = _mapper.Map<PlaceBetDto>(betEntity);
 
             return null;
         }

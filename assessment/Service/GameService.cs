@@ -29,7 +29,6 @@ namespace Service
             //var game = await GetPlayerGameAndCheckIfItExists(spinRequest.PlayerId);
 
             _repository.Game.Spin(spinRequest);
-            //await _repository.SaveAsync();
         }
 
         public async Task ShowPreviousSpins(PreviousSpinRequestDto previousSpin)
@@ -37,7 +36,6 @@ namespace Service
             //var game = await GetPlayerGameAndCheckIfItExists(previousSpin.PlayerId);
 
             _repository.Game.ShowPreviousSpins(previousSpin);
-           // await _repository.SaveAsync();
         }
     }
 }

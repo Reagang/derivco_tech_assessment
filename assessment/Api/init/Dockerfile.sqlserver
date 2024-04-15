@@ -1,0 +1,5 @@
+﻿FROM mcr.microsoft.com/mssql/server:2022-latest
+# Change permissions of /opt/mssql/bin directory
+USER root
+RUN chmod 755 /opt/mssql/bin
+USER mssql
