@@ -50,6 +50,8 @@ docker-compose build
 docker-compose up
 ```
 
+## Demo Screenshot
+![Alt text](assessment/Demo.png?raw=true "Swagger UI")
 
 ## :compass: Roadmap
 
