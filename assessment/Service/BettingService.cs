@@ -25,7 +25,7 @@ namespace Service
         }
         public async Task<PlaceBetDto> PlaceBet(PlaceBetRequestDto bet)
         {
-            var result = _repository.Betting.PlaceBet(bet);
+            var result = await _repository.Betting.PlaceBet(bet);
 
             return null;
         }

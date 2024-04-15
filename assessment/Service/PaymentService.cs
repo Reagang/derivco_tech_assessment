@@ -27,7 +27,7 @@ namespace Service
         {
             //var paymentInfo = await GetPlayerPaymentInfomationAndCheckIfItExists(payoutRequest.PlayerId);
 
-            _repository.Payment.Payout(payoutRequest);
+            await _repository.Payment.Payout(payoutRequest);
         }
     }
 }

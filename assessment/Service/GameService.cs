@@ -28,14 +28,14 @@ namespace Service
         {
             //var game = await GetPlayerGameAndCheckIfItExists(spinRequest.PlayerId);
 
-            _repository.Game.Spin(spinRequest);
+            await _repository.Game.Spin(spinRequest);
         }
 
         public async Task ShowPreviousSpins(PreviousSpinRequestDto previousSpin)
         {
             //var game = await GetPlayerGameAndCheckIfItExists(previousSpin.PlayerId);
 
-            _repository.Game.ShowPreviousSpins(previousSpin);
+            await _repository.Game.ShowPreviousSpins(previousSpin);
         }
     }
 }
